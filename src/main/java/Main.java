@@ -1,7 +1,14 @@
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mercadopago.*;
 import com.mercadopago.resources.Payment;
-import com.mercadopago.resources.datastructures.preference.*;
+import com.mercadopago.resources.datastructures.preference.Address;
+import com.mercadopago.resources.datastructures.preference.Identification;
+import com.mercadopago.resources.datastructures.preference.Item;
+import com.mercadopago.resources.datastructures.preference.Payer;
 import spark.*;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
@@ -15,6 +22,7 @@ public class Main {
     private static final  String ACCESS_TOKEN = "TEST-1078979896862798-031112-3756c6b8ce46b1c70da6d4ba60b8050a-405876008";
     private static final  String CLIENT_SECRET="AoK0C0M8XwGDhQ7YZrUJp8buZ5QrxoZw";
     private static final String CLIENT_ID= "1078979896862798";
+    private  static Preference  preference = new Preference ();
     public static void main(String[] args) {
         try {
             MercadoPago.SDK.setClientSecret(CLIENT_SECRET);
@@ -24,6 +32,8 @@ public class Main {
             e.printStackTrace();
         }
 
+
+
         Spark.get("/form", Main::render, new ThymeleafTemplateEngine());
 
         Spark.post("/pagarPreferencia", Main::pagarPreferencia, JsonUtils.json ());
@@ -32,54 +42,49 @@ public class Main {
 
         Spark.post("/procesar-pago-2", Main::procesarPago2, JsonUtils.json ());
 
+        Spark.post ( "/createPreference",Main::createPreference,JsonUtils.json ());
     }
 
 
-    public static ModelAndView render(Request req, Response res) throws  MPException{
+    private static Object createPreference(Request req, Response res) throws MPException{
 
-        //Create preference
+        JsonObject jobj = new Gson().fromJson(req.body (), JsonObject.class);
 
-        Preference preference = new Preference();
-        //Create  an item object
-
+        //Create an Item
         Item item= new Item();
-        item.setId("23")
-                .setTitle("Prueba Pago")
-                .setQuantity(4)
-                .setDescription("ARS")
-                .setUnitPrice((float) 84.74);
+        item.setId( String.valueOf ( jobj.get ( "item_id" ).toString ()))
+                .setTitle ( jobj.get ( "item_title" ).toString () )
+                .setQuantity ( Integer.valueOf ( jobj.get ( "item_quantity" ).toString () ) )
+                .setDescription ( jobj.get ("item_description").toString ())
+                .setUnitPrice ( Float.valueOf ( jobj.get ("item_unit_price").toString () ) );
 
         //Create a Payer
-
         Payer payer = new Payer();
-        payer.setEmail("test_user_66550278@testuser.com")
-                .setName("Jose")
-                .setSurname("Lopez")
-                .setDateCreated("2018-06-02T12:58:41.425-04:00")
-                .setPhone(new Phone()
-                        .setNumber("3434462020")
-                        .setAreaCode(" "))
-                .setAddress(new Address()
-                        .setStreetName("Calle prueba ")
-                        .setStreetNumber(234))
-                .setIdentification( new Identification()
-                        .setNumber("33271334")
-                        .setType("DNI"));
-
-
+        payer.setEmail(jobj.get ( "payer_email" ).toString ())
+                .setName(jobj.get ( "payer_name" ).toString ())
+                .setSurname(req.queryParams ( "payer_surmane" ))
+                .setAddress(new Address ()
+                        .setStreetName( ( jobj.getAsJsonObject ("payer_address").get ("streetAddress").toString () ) )
+                        .setStreetNumber( Integer.valueOf ( jobj.getAsJsonObject ("payer_address").get ("number").toString () ) ))
+                .setIdentification( new Identification ()
+                        .setNumber( jobj.getAsJsonObject ("payer_identification").get ("identificication_tipe").toString ())
+                        .setType(jobj.getAsJsonObject ("payer_identification").get ("identification_number").toString ()));
 
         //Setting preference properties
-
         preference.setPayer(payer);
         preference.appendItem(item);
-
-
-
         try {
             preference.save();
         } catch (MPException e) {
             e.printStackTrace();
         }
+
+
+        return preference;
+    }
+
+
+    public static ModelAndView render(Request req, Response rep ) throws  MPException{
 
         Map<String, Object> params = new HashMap<>();
         params.put("name", preference.getPayer().getName());
