@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Practica de Induccción</title>
+
+    <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
+
+    <script type="text/javascript">
+        Mercadopago.setPublishableKey("TEST-f61995a8-9738-499f-829d-42280f2bcad4");
+        Mercadopago.getIdentificationTypes();
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+</head>
+
+<body>
+
+<p><b>PUNTO 3</b></p>
+<form action="http://localhost:4567/pagarPreferencia" method="POST" id="pay" name="pay">
+
+    <fieldset>
+        <ul>
+            <li>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="your email"/>
+            </li>
+            <li>
+                <label for="cardNumber">Numero de Tarjeta:</label>
+                <input type="text" id="cardNumber" data-checkout="cardNumber" placeholder="4509 9535 6623 3704"
+                       onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
+                       onDrag="return false" onDrop="return false" autocomplete=off/>
+            </li>
+            <li>
+                <label for="securityCode">Codigo de Seguridad:</label>
+                <input type="text" id="securityCode" data-checkout="securityCode" placeholder="123"
+                       onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
+                       onDrag="return false" onDrop="return false" autocomplete=off/>
+            </li>
+            <li>
+                <label for="amount">Monto de Transacción:</label>
+                <input type="text" id="amount" name="amount" placeholder="100" onselectstart="return false"
+                       onpaste="return false" onCopy="return false" onCut="return false" onDrag="return false"
+                       onDrop="return false" autocomplete=off/>
+            </li>
+            <li>
+                <label for="installments">Cuotas:</label>
+                <select id="installments" name="installments">
+
+                </select>
+
+            </li>
+            <li>
+                <label for="cardExpirationMonth">Mes de Expiración:</label>
+                <input type="text" id="cardExpirationMonth" data-checkout="cardExpirationMonth" placeholder="12"
+                       onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
+                       onDrag="return false" onDrop="return false" autocomplete=off/>
+            </li>
+
+            <li>
+                <label for="cardExpirationYear">Año de Expiración:</label>
+                <input type="text" id="cardExpirationYear" data-checkout="cardExpirationYear" placeholder="2015"
+                       onselectstart="return false" onpaste="return false" onCopy="return false" onCut="return false"
+                       onDrag="return false" onDrop="return false" autocomplete=off/>
+            </li>
+            <li>
+                <label for="cardholderName">Nombre de la Tarjeta:</label>
+                <input type="text" id="cardholderName" data-checkout="cardholderName" placeholder="APRO"/>
+            </li>
+            <li>
+                <label for="docType">Tipo de Documento:</label>
+                <select id="docType" data-checkout="docType"></select>
+            </li>
+            <li>
+                <label for="docNumber">Numero de Documento:</label>
+                <input type="text" id="docNumber" data-checkout="docNumber" placeholder="12345678"/>
+            </li>
+        </ul>
+        <input type="hidden" id="paymentMethodId" name="paymentMethodId"/>
+        <input type="submit" value="Pagar"/>
+    </fieldset>
+
+
+</form>
+
+<script type="text/javascript">
+    (function () {
+        function $MPC_load() {
+            window.$MPC_loaded !== true && (function () {
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = document.location.protocol + '//secure.mlstatic.com/mptools/render.js';
+                var x = document.getElementsByTagName('script')[0];
+                x.parentNode.insertBefore(s, x);
+                window.$MPC_loaded = true;
+            })();
+        }
+
+        window.$MPC_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPC_load) : window.addEventListener('load', $MPC_load, false)) : null;
+    })();
+</script>
+
+<script>
+var $cardNumber = document.querySelector('#cardNumber');
+$cardNumber.addEventListener('keyup', guessingPaymentMethod);
+var $amount = document.querySelector('#amount');
+$amount.addEventListener('keyup', guessingPaymentMethod);
+
+function guessingPaymentMethod(event) {
+console.log("guessing payment method...");
+var idTarget = event.target.id;
+var bin = document.querySelector('#cardNumber').value.substring(0, 7).replace(" ", "");
+
+if (event.type == "keyup") {
+var digit = 6;
+if (idTarget === "amount") {
+digit = 0;
+}
+
+if (bin.length >= digit) {
+Mercadopago.getPaymentMethod({
+"bin": bin
+}, setPaymentMethodInfo);
+
+Mercadopago.getInstallments({
+"bin": bin,
+"amount": ($amount.value !== undefined ? $amount.value : 0)
+}, setInstallmentInfo);
+}
+} else {
+setTimeout(function () {
+if (bin.length >= 6) {
+Mercadopago.getPaymentMethod({
+"bin": bin
+}, setPaymentMethodInfo);
+}
+}, 100);
+}
+};
+
+function setPaymentMethodInfo(status, response) {
+if (status == 200) {
+var $paymentMethod = document.querySelector('#paymentMethodId');
+$paymentMethod.setAttribute('value', response[0].id);
+} else {
+document.querySelector("input[name=paymentMethodId]").value = (response[0] !== undefined ? response[0].id : "");
+}
+};
+
+function setInstallmentInfo(status, response) {
+var $installments = document.querySelector('#installments');
+
+if (status == 200) {
+while ($installments.firstChild) {
+$installments.removeChild($installments.firstChild);
+}
+for (i = 0; i < response[0].payer_costs.length; i++) {
+var op = document.createElement('option');
+op.text = response[0].payer_costs[i].recommended_message;
+op.value = response[0].payer_costs[i].installments;
+
+$installments.add(op, null);
+}
+} else {
+while ($installments.firstChild) {
+$installments.removeChild($installments.firstChild);
+}
+}
+};
+
+doSubmit = false;
+
+var $form = document.querySelector('#pay');
+$form.addEventListener('submit', doPay);
+
+function doPay(event) {
+event.preventDefault();
+if (!doSubmit) {
+var $form = document.querySelector('#pay');
+
+Mercadopago.createToken($form, sdkResponseHandler);
+
+return false;
+}
+};
+
+function sdkResponseHandler(status, response) {
+if (status != 200 && status != 201) {
+alert("verify filled data");
+} else {
+var form = document.querySelector('#pay');
+var card = document.createElement('input');
+card.setAttribute('name', 'token');
+card.setAttribute('type', 'hidden');
+card.setAttribute('value', response.id);
+form1.appendChild(card);
+doSubmit = true;
+
+form1.submit();
+}
+};
+
+
+</script>
+
+
+</body>
+</html>

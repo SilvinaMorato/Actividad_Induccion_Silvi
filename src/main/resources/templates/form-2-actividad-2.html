@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Practica de Induccción</title>
+
+    <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
+
+    <script type="text/javascript">
+        Mercadopago.setPublishableKey("TEST-f61995a8-9738-499f-829d-42280f2bcad4");
+        Mercadopago.getIdentificationTypes();
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+</head>
+
+<body>
+<p> <b>Punto 2 V1</b></p>
+<p>
+
+
+    <a th:href="${initPoint}" name="MP-Checkout" class="green-M-Sq-Ar" mp-mode="modal">Model</a>
+
+    <a th:href="${initPoint}" name="MP-Checkout" class="green-ar-m-Sq" mp-mode="popup">PopUp</a>
+
+    <a th:href="${initPoint}" name="MP-Checkout" class="green-M-Sq-Ar" mp-mode="redirect">Redirect</a>
+
+    <a th:href="${initPoint}" name="MP-Checkout" class="green-ar-m-Sq" mp-mode="blank">Blank</a>
+
+
+</p>
+
+</body>
+</html>

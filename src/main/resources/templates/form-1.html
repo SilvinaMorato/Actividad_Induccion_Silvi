@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Practica de Induccción</title>
+
+
+</head>
+
+<body>
+<form>
+
+    <p><b>DATOS- Formulario Punto 1</b></p>
+
+    <p th:inline="text"><label><b>Nombre: </b></label>[[${name}]]</p>
+
+    <p th:inline="text"><label><b>Apellido: </b></label> [[${surname}]]</p>
+
+    <p th:inline="text"><label><b>DNI: </b></label>[[${DNI}]]</p>
+
+    <p th:inline="text"><label><b>Titulo: </b></label>[[${titulo}]]</p>
+
+    <p th:inline="text"><label><b>Precio: </b></label>[[${precio}]]</p>
+
+    <p th:inline="text"><label><b>Numero de Telefono: </b></label>[[${telefono}]]</p>
+
+    <p th:inline="text"><label><b>DNI: </b></label>[[${dni}]]</p>
+
+    <p th:inline="text"><label><b>Init  Point: </b></label>[[${initPoint}]]</p>
+
+    <p th:inline="text"><label><b>Id Preference: </b></label>[[${idPreference}]]</p>
+
+    <p th:inline="text">
+        <label>
+            <b>Correo: </b>
+        </label>[[${correo}]]
+    </p>
+</form>
+</body>
+</html>
