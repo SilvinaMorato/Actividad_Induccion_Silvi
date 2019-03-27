@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Practica de Induccción</title>
+
+    <script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js"></script>
+
+    <script type="text/javascript">
+        Mercadopago.setPublishableKey("TEST-f61995a8-9738-499f-829d-42280f2bcad4");
+        Mercadopago.getIdentificationTypes();
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+
+</head>
+
+<body>
+<p> <b>PUNTO 5 - V2</b> </p>
+
+<form action="/procesar-pago-2" method="POST">
+    <script
+            src="https://www.mercadopago.com.ar/integrations/v1/web-tokenize-checkout.js"
+            th:data-preference-id="${idPreference}">
+
+    </script>
+
+
+</form>
+
+
+</body>
+</html>
