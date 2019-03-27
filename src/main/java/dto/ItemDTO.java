@@ -8,8 +8,9 @@ public class ItemDTO {
 
     @NotNull(message = "Dato Incorrecto o Nulo")
     private String idProduct = null;
+
     @NotBlank
-    @Min(value = 1, message = "No puede ser menor a 1")
+    @Min(value = 1, message = "Dato Incorrecto")
     @Digits (integer = 2, fraction  = 0)
     private String quantity = null;
 
@@ -20,7 +21,6 @@ public class ItemDTO {
 
     @NotBlank
     @Min(value = 0, message = "No puede ser menor a 0")
-
     private String unitPrice = null;
 
     @NotBlank

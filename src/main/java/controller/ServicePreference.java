@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import com.mercadopago.resources.Preference;
 

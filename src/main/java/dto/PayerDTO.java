@@ -1,36 +1,25 @@
 package dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class PayerDTO {
 
-
-
     @NotEmpty
+    @Size(min = 3, max = 50)
     private String surname = null;
     @NotEmpty
     private String name = null;
-
     private String phone = null;
-
     @NotEmpty
     @Email(message = "El correo electrónico debe ser válido")
     private String email= null;
-
     @NotEmpty
     private String  identificationType= null;
-
     @NotNull
     @Size(min = 8, max = 9)
     private String  identificationNumber= null;
-
     private String  number= null;
-
     private String streetAddress = null;
-
     private String phoneNumber = null;
     private String phoneArea = null;
 

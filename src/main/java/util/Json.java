@@ -1,12 +1,11 @@
 package util;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import Model.*;
+import model.*;
 
 import spark.Request;
 
@@ -56,8 +55,18 @@ public enum Json {
         }
 
     }
+    public String toJsonStringObj(Object object) {
+        try {
+            return mapper.writeValueAsString(
+                    object );
+        } catch (IOException e) {
 
+            // Handle parsing manually.
+            return "{ " +
+                    "\"error\":\" " +object.toString ()+"}" ;
+        }
 
+    }
     public static boolean isJSON(String json) {
         try {
             final ObjectMapper mapper = new ObjectMapper();

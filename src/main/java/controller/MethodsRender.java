@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import com.mercadopago.exceptions.MPException;
 import spark.ModelAndView;
