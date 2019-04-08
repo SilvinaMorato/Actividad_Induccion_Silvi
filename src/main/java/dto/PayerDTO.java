@@ -4,20 +4,22 @@ import javax.validation.constraints.*;
 
 public class PayerDTO {
 
-    @NotEmpty
-    @Size(min = 3, max = 50)
+    @Pattern(regexp = "(\\p{Alpha}|\\s)*", message = "caracter no validos")
     private String surname = null;
-    @NotEmpty
+
+    @Pattern(regexp = "(\\p{Alpha}|\\s)*", message = "caracteres no validos")
     private String name = null;
-    private String phone = null;
+
+    private Integer phone = null;
+
     @NotEmpty
     @Email(message = "El correo electrónico debe ser válido")
     private String email= null;
-    @NotEmpty
+
     private String  identificationType= null;
-    @NotNull
     @Size(min = 8, max = 9)
     private String  identificationNumber= null;
+
     private String  number= null;
     private String streetAddress = null;
     private String phoneNumber = null;
@@ -55,11 +57,11 @@ public class PayerDTO {
         this.name = name;
     }
 
-    public String getPhone() {
+    public Integer getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(Integer phone) {
         this.phone = phone;
     }
 
@@ -87,7 +89,6 @@ public class PayerDTO {
     public void setIdentificationNumber(String identificationNumber) {
         this.identificationNumber = identificationNumber;
     }
-
     public String getNumber() {
         return number;
     }

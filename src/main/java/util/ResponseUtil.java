@@ -1,7 +1,5 @@
 package util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import controller.ControllerMethods;
 import dto.PreferenceDTO;
 import model.ErrorResponse;
 import com.mercadopago.exceptions.MPException;
@@ -19,71 +17,63 @@ public class ResponseUtil {
 
     private static String responseBody;
     private static Set<ConstraintViolation<PreferenceDTO>> val;
+    private static   Map<String, Object> mapJSON = new HashMap<>();
+    private static  ErrorResponse errorResponse;
 
-
+    /**
+     *
+     * @param exception
+     * @param req
+     * @param res
+     */
     public static void excepcionInterruption(Exception exception, Request req, Response res) {
 
-
         String message = exception.getMessage().isEmpty() ? exception.toString() : exception.getMessage();
-        ErrorResponse errorResponse;
-        errorResponse = new ErrorResponse(HttpStatus.SC_NOT_FOUND, "NO se recibio ningun dato.");
-        res.status(404);
-        responseBody = (Json.INSTANCE.toJsonString(errorResponse));
+        errorResponse = new ErrorResponse(HttpStatus.SC_NOT_FOUND, "NO se pudo guardar la preferencia. Datos no encontrados.");
+        mapJSON.put("Estado", errorResponse.getError());
+        mapJSON.put("Mensaje", errorResponse.getMessage());
+        mapJSON.put("Datos erroneos", exception.toString());
+        //consultar bien el numero
+        res.status(400);
+        responseBody = (Json.INSTANCE.toJsonStringObj(mapJSON));
         res.type("application/json");
         res.body(responseBody);
-
     }
 
+    /**
+     *
+     * @param exception
+     * @param req
+     * @param res
+     */
+   public static void mpExceptionInterruption(MPException exception, Request req, Response res) {
 
-    public static void mpExceptionInterruption(MPException exception, Request req, Response res) {
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Error interno del sistema");
-        responseBody = (Json.INSTANCE.toJsonString(errorResponse));
-        res.status(500);
+        errorResponse = new ErrorResponse(HttpStatus.SC_BAD_REQUEST, "Error en el sistema, no se pudo realizar la carga de la preferencia");
+        mapJSON.put("Estado", errorResponse.getError());
+        mapJSON.put("Mensaje", errorResponse.getMessage());
+        mapJSON.put("Datos errone0s", exception.toString());
+        responseBody = (Json.INSTANCE.toJsonStringObj(mapJSON));
+        res.status(400);
         res.type("application/json");
         res.body(responseBody);
-
     }
 
+    /**
+     *
+     * @param exception
+     * @param req
+     * @param res
+     */
     public static void valException(ValidationException exception, Request req, Response res) {
 
-        String message = exception.getMessage() == null || exception.getMessage().isEmpty() ? exception.toString() : exception.getMessage();
         //crear un mapa
-        Map<String, Object> mapJSON = new HashMap<>();
-
-        mapJSON.put("Estado", exception.getStatusCode());
-        mapJSON.put("Mensaje", exception.getMessage());
-        mapJSON.put("Datos errones", exception.getObject());
+        mapJSON.put("estado", exception.getStatusCode());
+        mapJSON.put("mensaje", exception.getMessage());
+        mapJSON.put("datos_erroneos", exception.getObject());
         responseBody = (Json.INSTANCE.toJsonStringObj(mapJSON));
         res.status(exception.getStatusCode());
         res.type("application/json");
         res.body(responseBody);
-
-    /*  //  ErrorResponse errorResponse;
-    //    errorResponse = new ErrorResponse (HttpStatus.SC_BAD_REQUEST,message );
-        res.status(400);
-        responseBody = (Json.INSTANCE.toJsonString());
-        res.type("application/json");
-        res.body(responseBody)*/
-        ;
-
-    }
-
-
-    //Metodo que valida se las anotaciones pasaron correctamente
-    public static Object validateParamDinamic(PreferenceDTO pref) {
-
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        Set<ConstraintViolation<PreferenceDTO>> validations = validator.validate(pref);
-        for(ConstraintViolation violation : validations) {
-            System.out.println(violation.getPropertyPath());
-            System.out.println(violation.getMessage());
-
-        }
-        return validations;
-
     }
 
 
