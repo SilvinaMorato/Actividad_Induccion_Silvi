@@ -16,6 +16,7 @@ public class PreferenceDTO {
     @NotNull
     @Valid
     private PayerDTO payer = null;
+
     @NotNull
     @Valid
     private ItemDTO item = null;

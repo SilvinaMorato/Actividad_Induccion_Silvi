@@ -5,11 +5,14 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.mercadopago.resources.Preference;
+import dto.PreferenceDTO;
 import model.*;
 
 import spark.Request;
 
 import java.io.IOException;
+import java.security.cert.CollectionCertStoreParameters;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -77,4 +80,5 @@ public enum Json {
             return false;
         }
     }
+
 }

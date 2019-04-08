@@ -4,31 +4,29 @@ import javax.validation.constraints.*;
 
 public class ItemDTO {
 
-
-
     @NotNull(message = "Dato Incorrecto o Nulo")
-    private String idProduct = null;
+    private Integer idProduct = null;
 
-    @NotBlank
+    @NotNull
     @Min(value = 1, message = "Dato Incorrecto")
     @Digits (integer = 2, fraction  = 0)
-    private String quantity = null;
+    private Integer quantity = null;
 
     @NotBlank
     @Size(min = 5, max= 50)
     private String titulo = null;
 
 
-    @NotBlank
-    @Min(value = 0, message = "No puede ser menor a 0")
-    private String unitPrice = null;
+    @NotNull
+    @Min(value = 1, message = "No puede ser menor a 0")
+    private Float unitPrice = null;
 
-    @NotBlank
-    public String getQuantity() {
+
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -40,19 +38,19 @@ public class ItemDTO {
         this.titulo = titulo;
     }
 
-    public String getUnitPrice() {
+    public Float getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(String unitPrice) {
+    public void setUnitPrice(Float unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public String getIdProduct() {
+    public Integer getIdProduct() {
         return idProduct;
     }
 
-    public void setIdProduct(String idProduct) {
+    public void setIdProduct(Integer idProduct) {
         this.idProduct = idProduct;
     }
 }

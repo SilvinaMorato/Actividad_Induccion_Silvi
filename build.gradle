@@ -25,9 +25,18 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-validator-annotation-processor', version: '6.0.15.Final'
     compile group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
     compile group: 'org.glassfish.web', name: 'javax.el', version: '2.2.6'
+    compile 'io.rest-assured:json-path:3.3.0'
+    compile 'io.rest-assured:xml-path:3.3.0'
+    compile 'org.hamcrest:hamcrest-all:1.3'
+    compile 'com.github.fge:json-schema-validator:2.2.6'
+    compile 'com.github.fge:json-schema-core:1.2.5'
 
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.3.1'
+    testCompile 'io.rest-assured:rest-assured:3.3.0'
+    testCompile 'io.rest-assured:json-schema-validator:3.3.0'
+
 }
 compileKotlin {
     kotlinOptions {
@@ -39,3 +48,4 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
+
