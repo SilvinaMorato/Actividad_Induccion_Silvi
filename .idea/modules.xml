@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.iml" filepath="$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.PruebaMercadoPago.iml" filepath="$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.PruebaMercadoPago.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.PruebaMercadoPago.main.iml" filepath="$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.PruebaMercadoPago.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.PruebaMercadoPago.test.iml" filepath="$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.PruebaMercadoPago.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.main.iml" filepath="$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.test.iml" filepath="$PROJECT_DIR$/.idea/modules/PruebaMercadoPago.test.iml" />
+    </modules>
+  </component>
+</project>

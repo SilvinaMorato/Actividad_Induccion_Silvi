@@ -39,15 +39,15 @@ public class PreferenceControllerTest {
         /*
          *  verify that the data is of the type
          */
-        assertEquals("aaaaa@aaaa.com", pref.getPayer().getEmail());
+        assertEquals("aaaaa@aaaaa.com", pref.getPayer().getEmail());
         assertEquals("Pablo", pref.getPayer().getName());
         assertEquals(Integer.valueOf("1"), pref.getItem().getQuantity());
-        assertEquals(Float.valueOf("123.4"), pref.getItem().getUnitPrice());
+        assertEquals(Float.valueOf("1213.2"), pref.getItem().getUnitPrice());
         assertEquals(Integer.valueOf("12"), pref.getItem().getIdProduct());
     }
 
     /**
-     * Validate that the InitPoint of the preference saved in the n EXIST and verific map is not null or empty
+     * Validate that the InitPoint of the preference saved in the  EXIST and verific map is not null or empty
      */
     @Test
     public void testPreferenceValidationNotNull() throws Exception {
@@ -62,9 +62,9 @@ public class PreferenceControllerTest {
     public void testPreferenceInitPointNotnull() throws Exception {
         ConfigAccess.accessConfig();
         PreferenceDTO preferenceDTO = INSTANCE.mapTo(preferenceJsonOK, PreferenceDTO.class);
-        Preference preference = PreferenceService.savePreference(preferenceDTO);
+        Preference preference = PreferenceService.getInstance().savePreference(preferenceDTO);
         Assert.assertNotNull(preference.getInitPoint());
-        Map<String, Object> objectMap = PreferenceService.mapPreference();
+        Map<String, Object> objectMap = PreferenceService.mapPreference(preference);
         Assert.assertNotNull(objectMap);
     }
 
@@ -85,10 +85,9 @@ public class PreferenceControllerTest {
                 .log().all()
                 .and().assertThat().statusCode(is(equalTo(400)))
                 .and()
-
                 .body("mensaje", equalTo("Datos invalidos"))
                 .body("estado", equalTo(400))
-                .body("datos_erroneos", isEmptyOrNullString())
+                .body("datos_erroneos", notNullValue())
                 .and().extract().body().asString();
     }
 
@@ -119,15 +118,6 @@ public class PreferenceControllerTest {
      */
     @Test
     public void fomatMessaggeJson() {
-        String body = bodyJsonDateInvalidResponse();
-        String json = body.toString();
-        assertTrue(json.contains("mensaje"));
-        assertTrue(json.contains("estado"));
-        assertTrue(json.contains("datos_erroneos"));
-    }
-
-
-    public static String bodyJsonDateInvalidResponse() {
         String body = RestAssured
                 .given()
                 .baseUri(base)
@@ -139,8 +129,15 @@ public class PreferenceControllerTest {
                 .log().all()
                 .and().assertThat().statusCode(is(equalTo(400)))
                 .and().extract().body().asString();
-        return body;
+        String json = body.toString();
+        assertTrue(json.contains("mensaje"));
+        assertTrue(json.contains("estado"));
+        assertTrue(json.contains("datos_erroneos"));
     }
+
+
+
+
 }
 
 //

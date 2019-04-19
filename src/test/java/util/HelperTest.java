@@ -64,35 +64,8 @@ public class HelperTest {
                 "}";
         return preference;
     }
-    public static String bodyJsonDateInvalidResponse() {
-        String body = RestAssured
-                .given()
-                .baseUri(base)
-                .and()
-                .body(getMockParamsInvalid())
-                .when()
-                .post(pathPost)
-                .then()
-                .log().all()
-                .and().assertThat().statusCode(is(equalTo(400)))
-                .and().extract().body().asString();
-        return body;
-    }
 
-    public static String bodyJsonDateValidResponse() {
-        String body = RestAssured
-                .given()
-                .baseUri(base)
-                .and()
-                .body(getMockPreferenceOK())
-                .when()
-                .post(pathPost)
-                .then()
-                .log().all()
-                .and().assertThat().statusCode(is(equalTo(400)))
-                .and().extract().body().asString();
-        return body;
-    }
+
 
 }
 

@@ -19,7 +19,6 @@ public class PaymentDTO {
     private String email= null;
 
     @NotNull(message = "Es nulo")
-    @Positive(message = "No debe ser un numero menor que 0")
     @Digits(integer = 6,fraction = 2, message = "Debe ser un numero con dos decimales")
     private String amount= null;
 
@@ -28,7 +27,6 @@ public class PaymentDTO {
     private String PaymentMethodId= null;
 
     @NotNull(message = "no debe ser nulo")
-    @Positive
     @Digits( integer = 2, fraction = 0, message = "Las cuotas de 1 a 18")
     @Min(value = 1, message = "El minimo de cuota es 1.")
     private String Installments = null;
