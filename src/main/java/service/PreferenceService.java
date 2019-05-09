@@ -7,7 +7,6 @@ import com.mercadopago.resources.datastructures.preference.Item;
 import com.mercadopago.resources.datastructures.preference.Payer;
 import dto.PreferenceDTO;
 import model.PreferenceModel;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -23,8 +22,19 @@ public class PreferenceService {
          * @param preferenceDTO to create
          * @return Preference preference
          */
+     private static final PreferenceService INSTANCE = new PreferenceService();
 
-        public static Preference savePreference(PreferenceDTO preferenceDTO) throws MPException {
+     private PreferenceService() {
+            if (INSTANCE != null){
+                throw  new IllegalStateException("Preference Service already created");
+            }
+     }
+
+        public static PreferenceService getInstance(){
+          return INSTANCE;
+     }
+
+        public  Preference savePreference(PreferenceDTO preferenceDTO) throws MPException {
         Preference  preference = new Preference();
         Item item = new Item();
         item.setTitle(preferenceDTO.getItem().getTitulo())
@@ -59,19 +69,16 @@ public class PreferenceService {
                 Set<ConstraintViolation<PreferenceDTO>> validations = validator.validate(pref);
                 return validations;
         }
-
-
-
-        /**
+       /**
          * Generate map
          * @return map
          */
 
-        public static Map<String,Object> mapPreference(){
-                Map<String, Object> responseMap = new HashMap<> ();
-                responseMap.put("estado",200);
-                responseMap.put("init_point",PreferenceModel.preference.getInitPoint());
-                return responseMap;
+        public static Map<String, Object> mapPreference(Preference preference) {
+            Map<String, Object> responseMap = new HashMap<>();
+            responseMap.put("estado", 200);
+            responseMap.put("init_point", preference.getInitPoint());
+            return responseMap;
         }
 
 

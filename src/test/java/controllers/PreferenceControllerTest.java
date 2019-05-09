@@ -62,9 +62,9 @@ public class PreferenceControllerTest {
     public void testPreferenceInitPointNotnull() throws Exception {
         ConfigAccess.accessConfig();
         PreferenceDTO preferenceDTO = INSTANCE.mapTo(preferenceJsonOK, PreferenceDTO.class);
-        Preference preference = PreferenceService.savePreference(preferenceDTO);
+        Preference preference = PreferenceService.getInstance().savePreference(preferenceDTO);
         Assert.assertNotNull(preference.getInitPoint());
-        Map<String, Object> objectMap = PreferenceService.mapPreference();
+        Map<String, Object> objectMap = PreferenceService.mapPreference(preference);
         Assert.assertNotNull(objectMap);
     }
 

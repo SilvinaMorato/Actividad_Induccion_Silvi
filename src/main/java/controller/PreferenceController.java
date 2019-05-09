@@ -20,9 +20,6 @@ public class PreferenceController {
            this.preferenceService = preferenceService;
     }
 
-
-
-
     /**
      * save de PREFERENCE
      * @param req
@@ -33,19 +30,22 @@ public class PreferenceController {
 
     public static Map<String,Object> createPreference(Request req, Response res) throws Exception {
         PreferenceDTO preferenceDTO = (INSTANCE.mapTo(req.body(), PreferenceDTO.class));
+       return createPreferenceValidate(preferenceDTO);
+    }
 
+
+    public static Map<String, Object> createPreferenceValidate(PreferenceDTO preferenceDTO) throws Exception {
         ArrayList<String> validationLilst = validatePreference(preferenceDTO);
         if( validationLilst != null ) {
             throw new ValidationException("Datos invalidos", validationLilst, 400);
         }
 
-        Preference preference = PreferenceService.savePreference(preferenceDTO);
+        Preference preference = PreferenceService.getInstance().savePreference(preferenceDTO);
 
         if(preference.getInitPoint() == null) {
             throw new MPException("No se puedo guardar la preferencia", preference.getId(), 400);
         }
-
-        return PreferenceService.mapPreference();
+        return PreferenceService.mapPreference(preference);
     }
 
 
